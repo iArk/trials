@@ -51,54 +51,62 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
     {        
     $form = new Nette\Application\UI\Form;
 
-     $form->addText('name', 'Název:')->setRequired();
-     $form->addText('date', "Datum")
+     $form->addText('name', 'Název:')
+             ->setRequired()
+             ->setAttribute("class", "form-control");
+     $form->addText('date', "Datum:")
 	->setAttribute("placeholder", "dd.mm.rrrr")
                   ->addRule($form::PATTERN, "Datum musí být ve formátu dd.mm.rrrr", "(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.(20)\d\d")
-                  ->setRequired();
-     $form->addSelect('type', 'Typ',[
+                  ->setRequired()
+                  ->setAttribute("class", "form-control");
+     $form->addSelect('type', 'Typ:',[
             'omezený' => 'Časově omezený',
             'continuous' => 'Neomezený/pokračující', 
-     ]);
+     ])->setAttribute("class", "form-control custom-select");
     $form->addCheckbox('isWeb', 'Webový plán');
-    $form->addSubmit('send', 'Přidat plán');
+    $form->addSubmit('send', 'Přidat plán')->setAttribute("class","btn btn-primary");
     $form->onSuccess[] = [$this, 'createPlanSucceeded'];
+    $form->addProtection('Vypršel časový limit, odešlete formulář znovu');
     return $form;
     }
 
     public function createPlanSucceeded(Nette\Application\UI\Form $form, $values)
     {
-    $postid = $this->getParameter('id');
+    $postid = $this->getParameter('postid');
     
     $checkbox = "";
-    if ($values->isWeb == true){
-        $checkbox = "Ano";
-    } else {
+    if (isset($values->isWeb) && $values->isWeb == false){
         $checkbox = "Ne";
+    } else {
+        $checkbox = "Ano";
     }
     
     $date = date("Y-m-d", strtotime($values->date));
     
     if (isset($_SESSION['edited'])) {
-        $this->database->query('UPDATE `project` SET `name` = ?, `date` = ?, `type` = ?, `isWeb` = ? WHERE `project`.`id` = ?;', $values->name, $date, $values->type, $checkbox, $postid);
-/*
-         $this->database->table('project')->update([
+        /*$this->database->table('project')->update([
         'name' => $values->name,
-        'date' => $values->date,
+        'date' => $date,
         'type' => $values->type,
-        'isWeb' => $checkbox,
-    ]);*/
+        'isWeb' => $checkbox
+        ], 'WHERE id = ?', $postid);*/
+        
+        $this->database->query('UPDATE project SET', [
+        'name' => $values->name,
+        'date' => $date,
+        'type' => $values->type,
+        'isWeb' => $checkbox
+    ], 'WHERE id = ?', $postid);
+        
          unset($_SESSION['edited']);
     } else {
-        $this->database->query('INSERT INTO `project` VALUES (NULL, ?, ?, ?, ?);', $values->name, $date, $values->type, $checkbox);
-/*        
         $this->database->table('project')->insert([
         'id' => $postid,
         'name' => $values->name,
-        'date' => $values->date,
+        'date' => $date,
         'type' => $values->type,
         'isWeb' => $checkbox,
-    ]);*/
+    ]);
     }    
     $this->redirect('Homepage:default');
    
