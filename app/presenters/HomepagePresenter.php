@@ -54,17 +54,17 @@ class HomepagePresenter extends Nette\Application\UI\Presenter
      $form->addText('name', 'Název:')
              ->setRequired()
              ->setAttribute("class", "form-control");
-     $form->addText('date', "Datum:")
+     $form->addText('date', "Datum odevzdání:")
 	->setAttribute("placeholder", "dd.mm.rrrr")
                   ->addRule($form::PATTERN, "Datum musí být ve formátu dd.mm.rrrr", "(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.(20)\d\d")
                   ->setRequired()
                   ->setAttribute("class", "form-control");
      $form->addSelect('type', 'Typ:',[
-            'omezený' => 'Časově omezený',
-            'continuous' => 'Neomezený/pokračující', 
+            'Časově omezený' => 'Časově omezený',
+            'Pokračující' => 'Pokračující', 
      ])->setAttribute("class", "form-control custom-select");
     $form->addCheckbox('isWeb', 'Webový plán');
-    $form->addSubmit('send', 'Přidat plán')->setAttribute("class","btn btn-primary");
+    $form->addSubmit('send', 'Potvrdit')->setAttribute("class","btn btn-primary");
     $form->onSuccess[] = [$this, 'createPlanSucceeded'];
     $form->addProtection('Vypršel časový limit, odešlete formulář znovu');
     return $form;
