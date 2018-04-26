@@ -16,7 +16,7 @@ session:
 
 
 database:
-	dsn: 'mysql:host=127.0.0.1;dbname=trials'
+	dsn: 'mysql:host=localhost;dbname=trials'
 	user: root
 	password:
 	options:

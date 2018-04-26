@@ -1,12 +1,8 @@
 {block content}
 
-     <div class="container">
-        <div class="text-center">
-            <h1 n:block="title" class="display-4">Tabulky</h1>
-        </div>
-        <table class="table table-hover">
+    <table class="table table-hover">
             <tr class="bg-dark text-light">
-                <th>ID</th>
+                <th>Id</th>
                 <th>Název</th>
                 <th>Datum odevzdání</th>
                 <th>Typ projektu</th>
@@ -18,16 +14,13 @@
     <tr>
         <td>{$post->id}</td>
         <td>{$post->name}</td>
-        <td>{$post->date|date:'d.m Y'}</td>
+        <td>{$post->date|date:'j.m Y'}</td>
         <td>{$post->type}</td>
         <td>{$post->isWeb}</td>
-        <td class="text-danger"><a n:href="Homepage:delete $post->id" class="text-danger">Smazat</a> <a n:href="Homepage:edit $post->id">Upravit</a></td>
+        <td><a n:href="Homepage:delete $post->id" class="text-danger">Smazat</a> <a n:href="Postpage:edit $post->id" class="text-success">Editovat</a></td>
     </tr>
     {/foreach}
         </table>
-
-        <h2><a href="{link Homepage:create}" class="btn btn-primary">Vytvořit nový</a></h2>
-        
-        
-      </div>
+        <a class="btn btn-primary form-control" n:href="Postpage:create">Vytvořit nový záznam</a>
+    
 {/block}
