@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Počítač: 127.0.0.1
--- Vytvořeno: Pát 16. bře 2018, 13:42
+-- Vytvořeno: Čtv 26. dub 2018, 12:13
 -- Verze serveru: 10.1.29-MariaDB
 -- Verze PHP: 7.2.0
 
@@ -41,8 +41,8 @@ CREATE TABLE `project` (
 --
 
 INSERT INTO `project` (`id`, `name`, `date`, `type`, `isWeb`) VALUES
-(1, 'App', '2019-02-10', 'Časově omezený', 'Ano'),
-(2, 'Systém xyz', '2019-05-10', 'Pokračující', 'Ano');
+(1, 'App', '2019-02-10', 'Časově omezený projekt', 'Ano'),
+(2, 'Systém xyz', '2019-05-10', 'Continuous Integration', 'Ano');
 
 --
 -- Klíče pro exportované tabulky
